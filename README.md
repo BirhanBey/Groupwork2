@@ -1,4 +1,5 @@
 # Yet Another Lightweight Docker LAMP stack
+
 A lightweight Docker LAMP stack ([Apache](http://www.apache.org/), [MySQL](https://www.mysql.com/) and [PHP](http://php.net/)) based (mostly) on [Alpine](https://www.alpinelinux.org/about/) images.
 
 ### Why Alpine?
@@ -7,6 +8,7 @@ Because Alpine images are lightweight, and that means faster (down)loading times
 
 ## Prerequisites
 
+H
 Before you proceed, make sure that you have the following components installed and properly set up on your machine:
 
 - [Git](https://git-scm.com/)
