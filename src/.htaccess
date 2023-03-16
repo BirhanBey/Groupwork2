@@ -1,0 +1,8 @@
+#  DirectoryIndex pdo.php 
+Options +FollowSymLinks -MultiViews
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api/(.*)/(.*)$ index.php?endpoint=$1&id=$2 [L,QSA,NC]
+RewriteRule ^api/(.*)$ index.php?endpoint=$1 [L,QSA,NC]
