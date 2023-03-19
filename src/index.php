@@ -100,6 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create TodoList'));
         }
+    } else {
+        http_response_code(404);
+        echo json_encode(array('message' => 'Endpoint not found'));
     }
 }
 
