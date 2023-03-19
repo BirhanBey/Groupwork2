@@ -106,15 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
-
-
-
-
-
-
-
-
 // if you want to delete a todo list => api/TodoList&id={id}
 // if you want to delete a todo => api/Todo&id={id}
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
