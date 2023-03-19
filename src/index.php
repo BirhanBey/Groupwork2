@@ -17,7 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['endpoint'])) {
         $endpoint = $_GET['endpoint'];
         // Check if the endpoint is /TodoList
-        if ($endpoint === '/TodoList') {
+
+        if ($endpoint === '/TodoList' || '/todolist') {
+
+     
             // Check if an ID is provided
             if (isset($_GET['id'])) {
                 // Get the todo list from the database
@@ -70,13 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $todos->addTodo($idTodoList, $description);
 
         // Send a response based on the result of the addTodo method
-        if ($result) {
+
+        $response = array('message' => 'Todo created');
+        if (isset($result)) {
             http_response_code(201);
-            echo json_encode(array('message' => 'Todo created', 'id' => $result));
+            echo json_encode($response);
+
+      
         } else {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create todo'));
         }
+
+
+
+
 
         // Check if the endpoint is /TodoList
     } else if ($endpoint === '/TodoList') {
@@ -90,20 +101,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $todos->addTodoList($name);
 
         // Send a response based on the result of the addTodoList method
-        if ($result) {
+
+        $response = array('message' => 'TodoList created');
+        if (json_last_error() === JSON_ERROR_NONE) {
             http_response_code(201);
-            echo json_encode(array('message' => 'Todo list created', 'id' => $result));
+            echo json_encode($response);
         } else {
             http_response_code(500);
-            echo json_encode(array('message' => 'Unable to create todo list'));
+            echo json_encode(array('message' => 'Unable to create TodoList'));
         }
 
-        // If the endpoint is not recognized, send a 404 response
-    } else {
-        http_response_code(404);
-        echo json_encode(array('message' => 'Endpoint not found'));
     }
 }
+
+
+
+
+
 
 
 
@@ -199,7 +213,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
         $result = $todos->updateTodoStatus($id, $newStatus);
 
         // Send a response based on the result of the updateTodo method
-        if ($result) {
+
+        if (!$result) {
+
             http_response_code(200);
             echo json_encode(array('message' => 'Todo status updated'));
         } else {
