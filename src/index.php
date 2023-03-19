@@ -17,7 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['endpoint'])) {
         $endpoint = $_GET['endpoint'];
         // Check if the endpoint is /TodoList
+
         if ($endpoint === '/TodoList' || '/todolist') {
+
+     
             // Check if an ID is provided
             if (isset($_GET['id'])) {
                 // Get the todo list from the database
@@ -70,14 +73,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $todos->addTodo($idTodoList, $description);
 
         // Send a response based on the result of the addTodo method
+
         $response = array('message' => 'Todo created');
         if (isset($result)) {
             http_response_code(201);
             echo json_encode($response);
+
+      
         } else {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create todo'));
         }
+
+
+
 
 
         // Check if the endpoint is /TodoList
@@ -92,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $todos->addTodoList($name);
 
         // Send a response based on the result of the addTodoList method
+
         $response = array('message' => 'TodoList created');
         if (json_last_error() === JSON_ERROR_NONE) {
             http_response_code(201);
@@ -100,8 +110,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create TodoList'));
         }
+
     }
 }
+
+
+
 
 
 
@@ -199,7 +213,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
         $result = $todos->updateTodoStatus($id, $newStatus);
 
         // Send a response based on the result of the updateTodo method
+
         if (!$result) {
+
             http_response_code(200);
             echo json_encode(array('message' => 'Todo status updated'));
         } else {
