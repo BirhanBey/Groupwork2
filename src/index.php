@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         if ($endpoint === '/TodoList' || '/todolist') {
 
-     
             // Check if an ID is provided
             if (isset($_GET['id'])) {
                 // Get the todo list from the database
@@ -79,14 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(201);
             echo json_encode($response);
 
-      
         } else {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create todo'));
         }
-
-
-
 
 
         // Check if the endpoint is /TodoList
@@ -111,8 +106,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(array('message' => 'Unable to create TodoList'));
         }
 
+    } else {
+        http_response_code(404);
+        echo json_encode(array('message' => 'Endpoint not found'));
     }
 }
+
+
 
 
 
