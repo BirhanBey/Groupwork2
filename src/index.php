@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $endpoint = $_GET['endpoint'];
         // Check if the endpoint is /TodoList
 
-        if ($endpoint === '/TodoList' || '/todolist') {
+        if ($endpoint === '/TodoList' || $endpoint === '/todolist') {
 
             // Check if an ID is provided
             if (isset($_GET['id'])) {
@@ -33,10 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 echo json_encode(array('error' => 'ID parameter missing'));
             }
         } else {
-            // Handle unsupported endpoint
-            echo json_encode(array('error' => 'Unsupported endpoint'));
+            // Set endpoint to empty string if it's not recognized
+            $endpoint = '';
         }
-    } else {
+    }
+
+    if ($endpoint === '') {
         // No endpoint provided, show all TodoLists
         $todo = new Todos();
         $result = $todo->getAllLists();
@@ -45,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo json_encode($result);
     }
 }
+
+
 
 
 
@@ -77,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($result)) {
             http_response_code(201);
             echo json_encode($response);
-
         } else {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create todo'));
@@ -105,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(500);
             echo json_encode(array('message' => 'Unable to create TodoList'));
         }
-
     } else {
         http_response_code(404);
         echo json_encode(array('message' => 'Endpoint not found'));
