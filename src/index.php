@@ -1,12 +1,7 @@
 <?php
 
-require "includes/Todos.class.php";
 
-
-// Set the HTTP response headers
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-
+require "api.php";
 
 
 
@@ -23,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             // Check if an ID is provided
             if (isset($_GET['id'])) {
                 // Get the todo list from the database
-                $todo = new Todos();
+                $todo = new TodoList();
                 $result = $todo->getListById($_GET['id']);
 
                 // Return the result as JSON
@@ -40,16 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if ($endpoint === '') {
         // No endpoint provided, show all TodoLists
-        $todo = new Todos();
+        $todo = new TodoList();
         $result = $todo->getAllLists();
 
         // Return the result as JSON
         echo json_encode($result);
     }
 }
-
-
-
 
 
 
@@ -95,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = $data['name'];
 
         // Call the addTodoList method with the todo list name
-        $todos = new Todos();
+        $todos = new TodoList();
         $result = $todos->addTodoList($name);
 
         // Send a response based on the result of the addTodoList method
@@ -139,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         // Check if an ID is provided
         if (isset($_GET['id'])) {
             // Delete the todo list from the database
-            $todo = new Todos();
+            $todo = new TodoList();
             $result = $todo->deleteTodoList($_GET['id']);
 
             // Send a response based on the result of the deleteTodoList method
