@@ -40,7 +40,8 @@ class Todos
         );
         $result = $this->db->executeQuery($sql, $filters);
 
-        return $result ? $this->db->getLastInsertId() : null;
+
+        return $result === false  ?  null : $this->db->getLastInsertId();
     }
 
     public function updateTodoStatus($id)

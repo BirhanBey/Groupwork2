@@ -62,10 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
 
         // Call the addTodo method with the todo data
+        //extra validatie toevoegen bij id 
         $idTodoList = $data['TodoList_id'];
         $description = $data['description'];
         $todos = new Todos();
         $result = $todos->addTodo($idTodoList, $description);
+        
 
         // Send a response based on the result of the addTodo method
 
@@ -84,7 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Get the todo list name from the request body
         $data = json_decode(file_get_contents('php://input'), true);
+        //if isset bijvoegen
         $name = $data['name'];
+
 
         // Call the addTodoList method with the todo list name
         $todos = new TodoList();

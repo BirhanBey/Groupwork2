@@ -62,6 +62,7 @@ class TodoList
             $filters = array('id' => $id);
             $result = $this->db->executeQuery($sql, $filters);
             return $result[0]->name;
+            //if bijvoegen
         }
     }
 
