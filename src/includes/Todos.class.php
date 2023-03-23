@@ -57,9 +57,17 @@ class Todos
         $filters = array('id' => $id, 'newStatus' => $newStatus);
         $result = $this->db->executeQuery($sql, $filters);
 
-        return $result !== false;
+        if ($result === false) {
+            // Query was not successful
+            return false;
+        } else if ($result == 0) {
+            // No rows were affected by the query
+            return false;
+        } else {
+            // Query was successful and at least one row was affected
+            return true;
+        }
     }
-
     public function getTodoById($id)
     {
         $sql = "SELECT * FROM Todo WHERE id = :id";

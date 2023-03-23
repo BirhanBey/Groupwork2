@@ -58,11 +58,21 @@ class TodoList
 
             return $todoList;
         } else {
-            $sql = "SELECT name FROM TodoList WHERE idTodoList = :id";
-            $filters = array('id' => $id);
-            $result = $this->db->executeQuery($sql, $filters);
-            return $result[0]->name;
-            //if bijvoegen
+            if (!empty($id) && is_numeric($id)) {
+                $sql = "SELECT name FROM TodoList WHERE idTodoList = :id";
+                $filters = array('id' => $id);
+                $result = $this->db->executeQuery($sql, $filters);
+
+                if (!empty($result)) {
+                    return $result[0]->name;
+                } else {
+                    // er is geen overeenkomende record in de database
+                    echo json_encode(array('error' => 'ID Parameter is not correct'));
+                }
+            } else {
+                // ongeldig id waarde
+                return false;
+            }
         }
     }
 
@@ -88,7 +98,7 @@ class TodoList
         $sql = "DELETE FROM TodoList WHERE idTodoList = :idTodoList";
         $filters = array('idTodoList' => $idTodoList);
         $result = $this->db->executeQuery($sql, $filters);
-
+        
         return $result !== false;
     }
 }

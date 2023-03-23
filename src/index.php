@@ -61,13 +61,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Get the todo data from the request body
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // Call the addTodo method with the todo data
-        //extra validatie toevoegen bij id 
-        $idTodoList = $data['TodoList_id'];
-        $description = $data['description'];
+        //validatie toevoegen voor $idTodoList en $description
+        if (isset($data['TodoList_id']) && is_numeric($data['TodoList_id'])) {
+            $idTodoList = $data['TodoList_id'];
+        } else {
+            //ongeldige waarde voor $idTodoList
+            http_response_code(400);
+            echo json_encode(array('message' => 'Invalid value for TodoList_id'));
+            exit;
+        }
+
+        if (isset($data['description']) && !empty(trim($data['description']))) {
+            $description = trim($data['description']);
+        } else {
+            //ongeldige waarde voor $description
+            http_response_code(400);
+            echo json_encode(array('message' => 'Invalid value for description'));
+            exit;
+        }
+
         $todos = new Todos();
         $result = $todos->addTodo($idTodoList, $description);
-        
 
         // Send a response based on the result of the addTodo method
 
@@ -86,10 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Get the todo list name from the request body
         $data = json_decode(file_get_contents('php://input'), true);
-        //if isset bijvoegen
-        $name = $data['name'];
-
-
+        // Validatie toevoegen voor $name
+        if (isset($data['name']) && !empty(trim($data['name']))) {
+            $name = trim($data['name']);
+        } else {
+            http_response_code(400);
+            echo json_encode(array('message' => 'Invalid value for name'));
+            exit;
+        }
         // Call the addTodoList method with the todo list name
         $todos = new TodoList();
         $result = $todos->addTodoList($name);
@@ -181,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 
 
 // toggle isCompleted => api/Todo&id={id} , if isCompleted is 1 it will change to 0 and if its 0 it will change to 1
-if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     // Get the endpoint from the request URL
     $endpoint = $_GET['endpoint'];
     // Check if the endpoint is /Todo
@@ -203,6 +221,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
         // Get the current status of the todo
         $todos = new Todos();
         $currentStatus = $todos->getTodoStatus($id);
+        if (!isset($currentStatus)) {
+            http_response_code(400);
+            echo json_encode(array('message' => 'Invalid todo ID'));
+            exit;
+        } elseif (!is_int($currentStatus) || ($currentStatus != 0 && $currentStatus != 1)) {
+            http_response_code(400);
+            echo json_encode(array('message' => 'Invalid todo status value'));
+            exit;
+        }
+
 
         // Toggle the status of the todo
         $newStatus = $currentStatus == 1 ? 0 : 1;
@@ -212,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
 
         // Send a response based on the result of the updateTodo method
 
-        if (!$result) {
+        if ($result) {
 
             http_response_code(200);
             echo json_encode(array('message' => 'Todo status updated'));
